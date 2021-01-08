@@ -15,14 +15,14 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Supp_Vitamines implements Serializable {
+public class FicheSuppVitamines implements Serializable {
 	
 	@Id @GeneratedValue
 	private long id;
 	
 	@NotNull
 	@Size(min=3,max=15)
-	private String Nom;
+	private String type_supp;
 	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -32,20 +32,20 @@ public class Supp_Vitamines implements Serializable {
 	private boolean etat;
 	
 	@ManyToOne
-	private FicheVaccination ficheSupp ;
+	private CalendrierVaccination calendrierVaccination ;
 
-	public Supp_Vitamines() {
+	public FicheSuppVitamines() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Supp_Vitamines(@NotNull @Size(min = 3, max = 15) String nom, Date date, @NotNull boolean etat,
-			FicheVaccination ficheSupp) {
+	public FicheSuppVitamines(@NotNull @Size(min = 3, max = 15) String type_supp, Date date, @NotNull boolean etat,
+			CalendrierVaccination calendrierVaccination) {
 		super();
-		Nom = nom;
+		this.type_supp = type_supp;
 		this.date = date;
 		this.etat = etat;
-		this.ficheSupp = ficheSupp;
+		this.calendrierVaccination = calendrierVaccination;
 	}
 
 	public long getId() {
@@ -56,12 +56,12 @@ public class Supp_Vitamines implements Serializable {
 		this.id = id;
 	}
 
-	public String getNom() {
-		return Nom;
+	public String getType_supp() {
+		return type_supp;
 	}
 
-	public void setNom(String nom) {
-		Nom = nom;
+	public void setType_supp(String type_supp) {
+		this.type_supp = type_supp;
 	}
 
 	public Date getDate() {
@@ -80,14 +80,13 @@ public class Supp_Vitamines implements Serializable {
 		this.etat = etat;
 	}
 
-	public FicheVaccination getFicheVaccination() {
-		return ficheSupp;
+	public CalendrierVaccination getCalendrierVaccination() {
+		return calendrierVaccination;
 	}
 
-	public void setFicheVaccination(FicheVaccination ficheSupp) {
-		this.ficheSupp = ficheSupp;
+	public void setCalendrierVaccination(CalendrierVaccination calendrierVaccination) {
+		this.calendrierVaccination = calendrierVaccination;
 	}
 
-	
 	
 }

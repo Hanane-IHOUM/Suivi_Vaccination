@@ -68,7 +68,8 @@ public class EnfantContoller {
 	@RequestMapping(value="/")
 	public String home() {
 		
-		return "redirect:/operateur/enfants";
+		//return "redirect:/operateur/enfants";
+		return "hello";
 	}
 	
 	

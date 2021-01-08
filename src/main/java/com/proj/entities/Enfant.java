@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -24,22 +25,22 @@ public class Enfant implements Serializable{
 	
 	@NotNull
 	@Size(min=3,max=15)
-	private String Nom;
+	private String nom;
 	
 	@NotNull
 	@Size(min=3,max=15)
-	private String Prénom;
+	private String prenom;
 	
 	@NotNull
-	private String Sexe;
-	
-	@NotNull
-	@Size(min=3,max=30)
-	private String Nom_Prénom_Père;
+	private String sexe;
 	
 	@NotNull
 	@Size(min=3,max=30)
-	private String Nom_Prénom_Mère;
+	private String nom_prenom_pere;
+	
+	@NotNull
+	@Size(min=3,max=30)
+	private String nom_prenom_mere;
 	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -47,11 +48,11 @@ public class Enfant implements Serializable{
 	
 	@NotNull
 	@Size(min=3,max=15)
-	private String Lieu_Naiss;
+	private String lieu_naissance;
 	
 	@NotNull
 	@Size(min=3,max=50)
-	private String Adresse;
+	private String adresse;
 	
 	@NotNull
 	@Size(min=8,max=10)
@@ -59,33 +60,39 @@ public class Enfant implements Serializable{
 	
 	private int tele_tuteur;
 	
-	@ManyToOne
-	private FicheVaccination ficheVaccination ;
+	@OneToOne
+	private CalendrierVaccination calendrierVaccination ;
 
 	
+	@ManyToOne
+	private CentreSante centreSante ;
+
+
 	public Enfant() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public Enfant(@NotNull @Size(min = 3, max = 15) String nom, @NotNull @Size(min = 3, max = 15) String prénom,
-			@NotNull String sexe, @NotNull @Size(min = 3, max = 30) String nom_Prénom_Père,
-			@NotNull @Size(min = 3, max = 30) String nom_Prénom_Mère, Date naissance,
-			@NotNull @Size(min = 3, max = 15) String lieu_Naiss, @NotNull @Size(min = 3, max = 50) String adresse,
-			@NotNull @Size(min = 8, max = 10) String cin_tuteur, int tele_tuteur, FicheVaccination ficheVaccination) {
+	public Enfant(@NotNull @Size(min = 3, max = 15) String nom, @NotNull @Size(min = 3, max = 15) String prenom,
+			@NotNull String sexe, @NotNull @Size(min = 3, max = 30) String nom_prenom_pere,
+			@NotNull @Size(min = 3, max = 30) String nom_prenom_mere, Date naissance,
+			@NotNull @Size(min = 3, max = 15) String lieu_naissance, @NotNull @Size(min = 3, max = 50) String adresse,
+			@NotNull @Size(min = 8, max = 10) String cin_tuteur, int tele_tuteur,
+			CalendrierVaccination calendrierVaccination, CentreSante centreSante) {
 		super();
-		Nom = nom;
-		Prénom = prénom;
-		Sexe = sexe;
-		Nom_Prénom_Père = nom_Prénom_Père;
-		Nom_Prénom_Mère = nom_Prénom_Mère;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.sexe = sexe;
+		this.nom_prenom_pere = nom_prenom_pere;
+		this.nom_prenom_mere = nom_prenom_mere;
 		this.naissance = naissance;
-		Lieu_Naiss = lieu_Naiss;
-		Adresse = adresse;
+		this.lieu_naissance = lieu_naissance;
+		this.adresse = adresse;
 		this.cin_tuteur = cin_tuteur;
 		this.tele_tuteur = tele_tuteur;
-		this.ficheVaccination = ficheVaccination;
+		this.calendrierVaccination = calendrierVaccination;
+		this.centreSante = centreSante;
 	}
 
 
@@ -100,52 +107,52 @@ public class Enfant implements Serializable{
 
 
 	public String getNom() {
-		return Nom;
+		return nom;
 	}
 
 
 	public void setNom(String nom) {
-		Nom = nom;
+		this.nom = nom;
 	}
 
 
-	public String getPrénom() {
-		return Prénom;
+	public String getPrenom() {
+		return prenom;
 	}
 
 
-	public void setPrénom(String prénom) {
-		Prénom = prénom;
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
 	}
 
 
 	public String getSexe() {
-		return Sexe;
+		return sexe;
 	}
 
 
 	public void setSexe(String sexe) {
-		Sexe = sexe;
+		this.sexe = sexe;
 	}
 
 
-	public String getNom_Prénom_Père() {
-		return Nom_Prénom_Père;
+	public String getNom_prenom_pere() {
+		return nom_prenom_pere;
 	}
 
 
-	public void setNom_Prénom_Père(String nom_Prénom_Père) {
-		Nom_Prénom_Père = nom_Prénom_Père;
+	public void setNom_prenom_pere(String nom_prenom_pere) {
+		this.nom_prenom_pere = nom_prenom_pere;
 	}
 
 
-	public String getNom_Prénom_Mère() {
-		return Nom_Prénom_Mère;
+	public String getNom_prenom_mere() {
+		return nom_prenom_mere;
 	}
 
 
-	public void setNom_Prénom_Mère(String nom_Prénom_Mère) {
-		Nom_Prénom_Mère = nom_Prénom_Mère;
+	public void setNom_prenom_mere(String nom_prenom_mere) {
+		this.nom_prenom_mere = nom_prenom_mere;
 	}
 
 
@@ -159,23 +166,23 @@ public class Enfant implements Serializable{
 	}
 
 
-	public String getLieu_Naiss() {
-		return Lieu_Naiss;
+	public String getLieu_naissance() {
+		return lieu_naissance;
 	}
 
 
-	public void setLieu_Naiss(String lieu_Naiss) {
-		Lieu_Naiss = lieu_Naiss;
+	public void setLieu_naissance(String lieu_naissance) {
+		this.lieu_naissance = lieu_naissance;
 	}
 
 
 	public String getAdresse() {
-		return Adresse;
+		return adresse;
 	}
 
 
 	public void setAdresse(String adresse) {
-		Adresse = adresse;
+		this.adresse = adresse;
 	}
 
 
@@ -199,18 +206,24 @@ public class Enfant implements Serializable{
 	}
 
 
-	public FicheVaccination getFicheVaccination() {
-		return ficheVaccination;
+	public CalendrierVaccination getCalendrierVaccination() {
+		return calendrierVaccination;
 	}
 
 
-	public void setFicheVaccination(FicheVaccination ficheVaccination) {
-		this.ficheVaccination = ficheVaccination;
+	public void setCalendrierVaccination(CalendrierVaccination calendrierVaccination) {
+		this.calendrierVaccination = calendrierVaccination;
 	}
-	
-	
-	
-	
+
+
+	public CentreSante getCentreSante() {
+		return centreSante;
+	}
+
+
+	public void setCentreSante(CentreSante centreSante) {
+		this.centreSante = centreSante;
+	}
 	
 	
 	
