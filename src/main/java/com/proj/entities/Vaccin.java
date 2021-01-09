@@ -18,8 +18,10 @@ public class Vaccin implements Serializable{
 	private long id;
 	
 	@NotNull
-	@Size(min=3,max=15)
+	@Size(min=3,max=50)
 	private String type_vaccin;
+	
+	private int quantiteStock;
 	
 	@ManyToOne
 	private Stock stock ;
@@ -34,12 +36,18 @@ public class Vaccin implements Serializable{
 
 	
 
-	public Vaccin(@NotNull @Size(min = 3, max = 15) String type_vaccin, Stock stock, List<Commande> commandes) {
+
+
+	public Vaccin(@NotNull @Size(min = 3, max = 50) String type_vaccin, int quantiteStock, Stock stock,
+			List<Commande> commandes) {
 		super();
 		this.type_vaccin = type_vaccin;
+		this.quantiteStock = quantiteStock;
 		this.stock = stock;
 		this.commandes = commandes;
 	}
+
+
 
 
 
@@ -77,6 +85,17 @@ public class Vaccin implements Serializable{
 
 	public void setCommandes(List<Commande> commandes) {
 		this.commandes = commandes;
+	}
+
+
+	public int getQuantiteStock() {
+		return quantiteStock;
+	}
+
+
+
+	public void setQuantiteStock(int quantiteStock) {
+		this.quantiteStock = quantiteStock;
 	}
 
 	

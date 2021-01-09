@@ -21,8 +21,22 @@ public interface FicheVaccinRepository extends JpaRepository<FicheVaccin, Long>{
 	public void edit(@Param("x")boolean etat, @Param("y") Long id);
 	
 	
-	@Query("select f from FicheVaccin f where f.date like :x and f.etat like false")
-	public List<FicheVaccin> chercher(@Param("x")Date date);
+	@Query("select f from FicheVaccin f"
+			+ " inner join CalendrierVaccination c on f.calendrierVaccination = c.id"
+			+ " inner join Enfant e on c.enfant = e.id"
+			+ " where f.date like :x and f.etat=0"
+			+ " and e.centreSante.id like :u")
+	public List<FicheVaccin> chercher(@Param("x")Date date, @Param("u")Long idcentre);
+	
+	
+	@Query("select f from FicheVaccin f"
+			+ "	inner join CalendrierVaccination c on f.calendrierVaccination = c.id "
+			+ " inner join Enfant e on c.enfant = e.id "
+			+ " where f.date like :x"
+			+ " and f.type_vaccin like :y"
+			+ " and e.sexe like :z"
+			+ " and e.centreSante.id like :u")
+	public List<FicheVaccin> recherchavancee(@Param("x")Date date, @Param("y")String type,@Param("z")String sexe, @Param("u")Long idcentre);
 }
 
 

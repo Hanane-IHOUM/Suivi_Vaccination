@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -17,15 +18,11 @@ public class User implements Serializable {
 	
 	@NotNull
 	@Size(min=3,max=15)
-	private String nom;
-	
-	@NotNull
-	@Size(min=3,max=15)
-	private String prenom;
+	private String username;
 	
 	
 	@NotNull
-	@Size(min=3,max=30)
+	@Size(min=3,max=50)
 	private String email;
 	
 	
@@ -38,23 +35,36 @@ public class User implements Serializable {
 	private String role;
 	
 	private boolean active;
+	
+	@ManyToOne
+	private CentreSante centreSante;
 
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(@NotNull @Size(min = 3, max = 15) String nom, @NotNull @Size(min = 3, max = 15) String prenom,
-			@NotNull @Size(min = 3, max = 30) String email, @NotNull @Size(min = 3, max = 50) String password,
-			@NotNull @Size(min = 8, max = 10) String role, boolean active) {
+	
+
+	
+
+
+	public User(@NotNull @Size(min = 3, max = 15) String username, @NotNull @Size(min = 3, max = 50) String email,
+			@NotNull @Size(min = 3, max = 50) String password, @NotNull @Size(min = 8, max = 10) String role,
+			boolean active, CentreSante centreSante) {
 		super();
-		this.nom = nom;
-		this.prenom = prenom;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.active = active;
+		this.centreSante = centreSante;
 	}
+
+
+
+
+
 
 	public long getId() {
 		return id;
@@ -64,20 +74,13 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getNom() {
-		return nom;
+
+	public String getUsername() {
+		return username;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {
@@ -110,6 +113,18 @@ public class User implements Serializable {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+
+
+	public CentreSante getCentreSnate() {
+		return centreSante;
+	}
+
+
+
+	public void setCentreSnate(CentreSante centreSnate) {
+		this.centreSante = centreSnate;
 	}
 
 	

@@ -28,23 +28,26 @@ public class CentreSante implements Serializable{
 	@ManyToOne
 	private Region region ;
 	
-	@OneToOne
-	private Stock stock;
+	@OneToMany(targetEntity = User.class, mappedBy = "centreSante")
+	private List<User> users;
 
 	public CentreSante() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	
 
-	public CentreSante(@NotNull @Size(min = 3, max = 15) String nom, List<Enfant> enfants, Region region, Stock stock) {
+
+	public CentreSante(@NotNull @Size(min = 3, max = 15) String nom, List<Enfant> enfants, Region region,
+			List<User> users) {
 		super();
 		this.nom = nom;
 		this.enfants = enfants;
 		this.region = region;
-		this.stock = stock;
+		this.users = users;
 	}
+
 
 
 
@@ -82,15 +85,17 @@ public class CentreSante implements Serializable{
 
 
 
-	public Stock getStock() {
-		return stock;
+
+	public List<User> getUsers() {
+		return users;
 	}
 
 
 
-	public void setStock(Stock stock) {
-		this.stock = stock;
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
-	
+
 	
 }

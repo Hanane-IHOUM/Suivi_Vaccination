@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.proj.dao.CalendrierVaccinationRepository;
 import com.proj.dao.FicheSuppVitaminesRepository;
 import com.proj.dao.FicheVaccinRepository;
+import com.proj.dao.UserRepository;
+import com.proj.dao.VaccinRepository;
 import com.proj.dao.EnfantRepository;
 
 import com.proj.entities.CalendrierVaccination;
 import com.proj.entities.FicheSuppVitamines;
 import com.proj.entities.FicheVaccin;
+import com.proj.entities.User;
+import com.proj.entities.Vaccin;
 import com.proj.entities.Enfant;
 
 
@@ -43,6 +47,12 @@ public class CalendrierVaccinationController {
 	
 	@Autowired
 	private EnfantRepository enfantRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private VaccinRepository vaccinRepository;
 	
 	
 	@RequestMapping(value="/operateur/calendrier")
@@ -70,6 +80,14 @@ public class CalendrierVaccinationController {
 			  FicheVaccin fiche = f.get();
 			  Long idd= fiche.getId();
 			  ficheVaccinRepository.edit(true, idd);
+			  
+			  String type = fiche.getType_vaccin();
+			  Long idcentre = fiche.getCalendrierVaccination().getEnfant().getCentreSante().getId();
+			  
+			  Vaccin vaccin = vaccinRepository.chercher(idcentre, type);
+			  
+			  vaccinRepository.edit(vaccin.getQuantiteStock()-1, vaccin.getId());
+			  
 			  Long i =fiche.getCalendrierVaccination().getEnfant().getId();
 			  return "redirect:/operateur/calendrier?id="+i;
 		}
@@ -79,34 +97,44 @@ public class CalendrierVaccinationController {
 	}
 	
 	
-	/*
-	
-	@RequestMapping(value="/operateur/editfichevaccin", method=RequestMethod.GET)
-	public String editfichesupp(Model model, Long id) {
-		Optional<FicheSuppVitamines> f = ficheSuppVitaminesRepository.findById(id);
-		
-		if(f.isPresent()) {
-			  FicheSuppVitamines fiche = f.get();
-			  fiche.setEtat(true);
-		}
-		
-		return "redirect:/details";
-	}
-	*/
 	
 	@RequestMapping(value="/operateur/rdv")
-	public String rdv(Model model , @RequestParam(name = "date", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+	public String rdv(Model model , @RequestParam(name = "date", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, HttpServletRequest request) {
 		
-		List <FicheVaccin> f = ficheVaccinRepository.chercher(date);
+		Principal principal = request.getUserPrincipal();
+        User user = userRepository.chercher(principal.getName());
+        
+        Long idcentre = user.getCentreSnate().getId();
+        
+		List <FicheVaccin> f = ficheVaccinRepository.chercher(date, idcentre);
 		model.addAttribute("listRdvVaccin", f);
-		
-		
-		//List <FicheSuppVitamines> fs = ficheSuppVitaminesRepository.chercher(date);
-		//model.addAttribute("listRdvSupp", fs);
 		
 		model.addAttribute("date", date);
 		
 		return "rdv";
+	}
+	
+	
+	@RequestMapping(value="/operateur/rechercheAvancee")
+	public String recherchAvancee(Model model 
+			, @RequestParam(name = "date", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date
+			, @RequestParam(name = "type", defaultValue = "") String type
+			, @RequestParam(name = "sexe", defaultValue = "") String sexe
+			,  HttpServletRequest request) {
+		
+		Principal principal = request.getUserPrincipal();
+        User user = userRepository.chercher(principal.getName());
+        
+        Long idcentre = user.getCentreSnate().getId();
+		
+		List <FicheVaccin> f = ficheVaccinRepository.recherchavancee(date, "%"+type+"%", "%"+sexe+"%", idcentre);
+		model.addAttribute("list", f);
+		
+		model.addAttribute("date", date);
+		model.addAttribute("type", type);
+		model.addAttribute("sexe", sexe);
+		
+		return "rechercheAvancee";
 	}
 	
 }

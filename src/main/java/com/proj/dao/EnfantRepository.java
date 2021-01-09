@@ -13,14 +13,14 @@ import com.proj.entities.Enfant;
 
 public interface EnfantRepository extends JpaRepository<Enfant, Long>{
 
-	@Query("select e from Enfant e where e.cin_tuteur like :x and e.naissance like :y")
-	public List<Enfant> chercher(@Param("x")String cin, @Param("y")Date date);
+	@Query("select e from Enfant e where e.cin_tuteur like :x and e.naissance like :y and e.centreSante.id like :z")
+	public List<Enfant> chercher(@Param("x")String cin, @Param("y")Date date, @Param("z")Long idcentre);
 	
-	
+	@Query("select e from Enfant e where e.centreSante.id like :x")
+	public List<Enfant> chercherenfantcentre(@Param("x")Long idcentre);
 	
 	@Modifying
 	@Query("UPDATE Enfant e SET e.adresse = :x, e.tele_tuteur = :y WHERE e.id = :z")
-	
 	@Transactional
 	public void edit(@Param("x")String adresse, @Param("y")int tele, @Param("z") Long id);
 }

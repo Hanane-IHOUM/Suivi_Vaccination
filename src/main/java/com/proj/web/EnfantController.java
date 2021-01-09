@@ -1,5 +1,6 @@
 package com.proj.web;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,11 @@ import com.proj.entities.Enfant;
 
 import com.proj.dao.CalendrierVaccinationRepository;
 import com.proj.entities.CalendrierVaccination;
+import com.proj.entities.CentreSante;
 import com.proj.dao.FicheVaccinRepository;
+import com.proj.dao.UserRepository;
 import com.proj.entities.FicheVaccin;
+import com.proj.entities.User;
 
 @Controller
 public class EnfantController {
@@ -36,10 +40,19 @@ public class EnfantController {
 	@Autowired
 	private FicheVaccinRepository ficheVaccinRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
+	
 	@RequestMapping(value="/operateur/enfants")
-	public String index(Model model) {
+	public String index(Model model, HttpServletRequest request) {
 		
-		List <Enfant> enfants = enfantRepository.findAll();
+		Principal principal = request.getUserPrincipal();
+        User user = userRepository.chercher(principal.getName());
+        
+        Long idcentre = user.getCentreSnate().getId();
+        
+		List <Enfant> enfants = enfantRepository.chercherenfantcentre(idcentre);
 		model.addAttribute("listEnfants", enfants);
 		return "listeEnfants";
 	}
@@ -47,9 +60,16 @@ public class EnfantController {
 	
 	@RequestMapping(value="/operateur/recherche")
 	public String recherche(Model model ,@RequestParam(name="cin", defaultValue="") String cin, 
-						@RequestParam(name = "date", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+						@RequestParam(name = "date", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date
+						,HttpServletRequest request) {
 		
-		List <Enfant> enfants = enfantRepository.chercher("%"+cin+"%",date);
+		Principal principal = request.getUserPrincipal();
+        User user = userRepository.chercher(principal.getName());
+        
+        Long idcentre = user.getCentreSnate().getId();
+		
+		List <Enfant> enfants = enfantRepository.chercher("%"+cin+"%",date, idcentre);
+		
 		model.addAttribute("listEnfants", enfants);
 		model.addAttribute("cin", cin);
 		model.addAttribute("date", date);
@@ -97,7 +117,7 @@ public class EnfantController {
 				@RequestParam(name = "date1", defaultValue = "2020-01-01") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date1, 
 				@RequestParam(name = "date2", defaultValue = "2020-01-01") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date2, 
 				@RequestParam(name = "date3", defaultValue = "2020-01-01") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date3,
-				BindingResult bindingResult) {
+				BindingResult bindingResult, HttpServletRequest request) {
 		if(bindingResult.hasErrors()) {
 			return "formEnfant";
 		}
@@ -106,9 +126,14 @@ public class EnfantController {
 		enfant.setCalendrierVaccination(calendrier);
 		
 		calendrierVaccinationRepository.save(calendrier );
+		
+		Principal principal = request.getUserPrincipal();
+        User user = userRepository.chercher(principal.getName());
+        
+        CentreSante centre = user.getCentreSnate();
+        enfant.setCentreSante(centre);
+        
 		enfantRepository.save(enfant);
-		
-		
 		
 		calendrier.setEnfant(enfant);
 		calendrierVaccinationRepository.save(calendrier );
@@ -131,10 +156,14 @@ public class EnfantController {
 	
 	
 	@RequestMapping(value="/")
-	public String home() {
+	public String home(HttpServletRequest request) {
 		
-		//return "redirect:/operateur/enfants";
-		return "hello";
+		boolean isAdmin = request.isUserInRole("OPERATEUR");
+		
+		if(isAdmin) {
+			return "redirect:/operateur/enfants";
+		}
+		return "redirect:/gestionnaire";
 	}
 	
 	

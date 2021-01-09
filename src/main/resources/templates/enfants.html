@@ -33,11 +33,8 @@
 		<thead>
 			<tr>
 				<th>ID</th><th>Nom</th><th>Prénom</th>
-				<!-- <th>Sexe</th><th>Nom & Prénom de père</th><th>Nom & Prénom du mère</th> -->
 				<th>Date naissance</th>
-				<!-- <th>Lieu Naissance</th><th>Adresse</th> -->
 				<th>CIN tuteur</th>
-				<!-- <th>Tele tuteur</th> -->
 			</tr>
 		</thead>
 		<tbody>
@@ -45,18 +42,11 @@
 				<td th:text="${e.id}"></td>
 				<td th:text="${e.nom}"></td>
 				<td th:text="${e.prenom}"></td>
-				<!-- <td th:text="${e.sexe}"></td> -->
-				<!--<td th:text="${e.nom_prenom_pere}"></td> -->
-				<!--<td th:text="${e.nom_prenom_mere}"></td> -->
 				<td th:text="${e.naissance}"></td>
-				<!--<td th:text="${e.lieu_naissance}"></td> -->
-				<!--<td th:text="${e.adresse}"></td> -->
 				<td th:text="${e.cin_tuteur}"></td>
-				<!--<td th:text="${e.tele_tuteur}"></td> -->
 				
 				<td><a th:href="@{/operateur/calendrier(id=${e.id})}">Afficher Calendrier</a></td>
 				<td><a th:href="@{/operateur/formedit(id=${e.id})}">Modifier</a></td>
-				<!--<td><a onclick="return confirm('Etes vous sure?')" th:href="@{/admin/delete(id=${p.id},mc=${mc})}">Supprimer</a></td> -->
 			</tr>
 		</tbody>
 	</table>

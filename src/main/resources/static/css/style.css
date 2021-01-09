@@ -19,7 +19,7 @@
 }
 
 .log{
-	margin-left : 600px;
+	margin-left : 300px;
 }
 
 .log2{
@@ -27,4 +27,14 @@
 }
 .titre {
 background-color: #E8EEF4;
+}
+
+.etat {
+	color: #3FEE16;
+	font-weight: bold;
+}
+
+.mybtn{
+	background-color: #EE1654;
+	color: #F4FCF2;
 }
