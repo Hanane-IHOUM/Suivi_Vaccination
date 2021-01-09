@@ -22,7 +22,7 @@ public class FicheVaccin implements Serializable{
 	private long id;
 	
 	@NotNull
-	@Size(min=3,max=15)
+	@Size(min=3,max=50)
 	private String type_vaccin;
 	
 	@Temporal(TemporalType.DATE)
@@ -40,7 +40,9 @@ public class FicheVaccin implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public FicheVaccin(@NotNull @Size(min = 3, max = 15) String type_vaccin, Date date, @NotNull boolean etat,
+	
+
+	public FicheVaccin(@NotNull @Size(min = 3, max = 50) String type_vaccin, Date date, @NotNull boolean etat,
 			CalendrierVaccination calendrierVaccination) {
 		super();
 		this.type_vaccin = type_vaccin;
@@ -48,6 +50,8 @@ public class FicheVaccin implements Serializable{
 		this.etat = etat;
 		this.calendrierVaccination = calendrierVaccination;
 	}
+
+
 
 	public long getId() {
 		return id;

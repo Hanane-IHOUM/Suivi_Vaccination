@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.proj.entities.CalendrierVaccination;
 
-public interface FicheVaccinationRepository extends JpaRepository<CalendrierVaccination, Long>{
+public interface CalendrierVaccinationRepository extends JpaRepository<CalendrierVaccination, Long>{
 
 }
 

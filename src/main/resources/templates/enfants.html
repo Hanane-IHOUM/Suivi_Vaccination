@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layout}">
+		
+<head>
+<meta charset="utf-8"/>
+<title>Enfants</title>
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
+		th:href="@{css/bootstrap.min.css}"/>
+		
+<link rel="stylesheet" type="text/css" href="../static/css/style.css"
+		th:href="@{css/style.css}"/>
+		
+</head>
+<body >
+
+<div layout:fragment="custom-content" >
+	<div class="container spacer" >
+		<form th:action="@{/operateur/recherche}" method="get">
+			<label>CIN du tuteur : </label>
+			<input type="text" name="cin" th:value="${cin}"/>
+			<label>Date de naissance : </label>
+			<input type="date" name ="date" th:value = "${date}" />
+			<button class="btn btn-primary">Chercher</button>
+		</form>
+	</div>
+
+	<div class="container">
+	<h3>Liste des Enfants</h3>
+	<table class="table">
+	
+		<thead>
+			<tr>
+				<th>ID</th><th>Nom</th><th>Prénom</th>
+				<!-- <th>Sexe</th><th>Nom & Prénom de père</th><th>Nom & Prénom du mère</th> -->
+				<th>Date naissance</th>
+				<!-- <th>Lieu Naissance</th><th>Adresse</th> -->
+				<th>CIN tuteur</th>
+				<!-- <th>Tele tuteur</th> -->
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="e:${listEnfants}">
+				<td th:text="${e.id}"></td>
+				<td th:text="${e.nom}"></td>
+				<td th:text="${e.prenom}"></td>
+				<!-- <td th:text="${e.sexe}"></td> -->
+				<!--<td th:text="${e.nom_prenom_pere}"></td> -->
+				<!--<td th:text="${e.nom_prenom_mere}"></td> -->
+				<td th:text="${e.naissance}"></td>
+				<!--<td th:text="${e.lieu_naissance}"></td> -->
+				<!--<td th:text="${e.adresse}"></td> -->
+				<td th:text="${e.cin_tuteur}"></td>
+				<!--<td th:text="${e.tele_tuteur}"></td> -->
+				
+				<td><a th:href="@{/operateur/calendrier(id=${e.id})}">Afficher Calendrier</a></td>
+				<td><a th:href="@{/operateur/formedit(id=${e.id})}">Modifier</a></td>
+				<!--<td><a onclick="return confirm('Etes vous sure?')" th:href="@{/admin/delete(id=${p.id},mc=${mc})}">Supprimer</a></td> -->
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+</div>
+</body>
+</html>
