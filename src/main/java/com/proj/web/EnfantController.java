@@ -158,12 +158,18 @@ public class EnfantController {
 	@RequestMapping(value="/")
 	public String home(HttpServletRequest request) {
 		
-		boolean isAdmin = request.isUserInRole("OPERATEUR");
+		boolean isOper = request.isUserInRole("OPERATEUR");
+		boolean isGest = request.isUserInRole("GESTIONN");
 		
-		if(isAdmin) {
+		if(isOper) {
 			return "redirect:/operateur/enfants";
 		}
-		return "redirect:/gestionnaire";
+		else {
+			if(isGest){
+				return "redirect:/gestionnaire/tableauxBords/vaccinParSexe";
+			}	
+		}
+		return "redirect:/decideur";
 	}
 	
 	
