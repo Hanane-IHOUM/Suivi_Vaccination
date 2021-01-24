@@ -1,6 +1,11 @@
 .red{
 	color: red;
 }
+
+.num{
+	color: #2C91E9;
+}
+
 .redblod{
 	color: red;
 	font-weight: bold;
@@ -12,6 +17,16 @@
 .spacer{
 	margin-top: 20px;
 }
+
+.spacer2{
+	margin-top: 80px;
+	margin-left: 100px;
+}
+
+.spacer3{
+	margin-top: 80px;
+}
+
 .mil{
 	margin-left: 320px;
 }

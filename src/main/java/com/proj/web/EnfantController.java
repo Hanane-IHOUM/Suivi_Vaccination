@@ -167,9 +167,9 @@ public class EnfantController {
 		else {
 			if(isGest){
 				return "redirect:/gestionnaire/tableauxBords/vaccinParSexe";
-			}	
+			}
 		}
-		return "redirect:/decideur";
+		return "redirect:/decideur/tableauxBords/vaccinParAn";
 	}
 	
 	

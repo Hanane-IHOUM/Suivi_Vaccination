@@ -24,11 +24,12 @@ import com.proj.dao.UserRepository;
 import com.proj.dao.VaccinRepository;
 import com.proj.dao.CommandeRepository;
 import com.proj.dao.EnfantRepository;
+import com.proj.dao.FicheVaccinRepository;
 
 import com.proj.entities.Commande;
 import com.proj.entities.User;
 import com.proj.entities.Vaccin;
-
+import com.proj.entities.FicheVaccin;
 
 
 @Controller
@@ -43,6 +44,8 @@ public class StockController {
 	@Autowired
 	private CommandeRepository commandeRepository;
 	
+	@Autowired
+	private FicheVaccinRepository ficheVaccinRepository;
 	
 	@RequestMapping(value="/operateur/stock")
 	public String stock(Model model ,HttpServletRequest request) {
@@ -97,5 +100,38 @@ public class StockController {
 	}
 	
 	
+	@RequestMapping(value="/gestionnaire/gestionStock")
+	public String gestionDeStock(Model model, 
+			@RequestParam(name = "dateDebut", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateDebut,
+			@RequestParam(name = "dateFin", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFin,
+			@RequestParam(name="typeVaccin", defaultValue="") String typeVaccin,
+			HttpServletRequest request){
+		
+		Principal principal = request.getUserPrincipal();
+        User user = userRepository.chercher(principal.getName());
+        
+        Long idcentre = user.getCentreSnate().getId();
+		
+		
+		List<FicheVaccin> listeVaccinsPeriodeType = ficheVaccinRepository.vaccinsConosomesPeriodeType(dateDebut,dateFin,"%"+typeVaccin+"%",idcentre); 
+		Integer QuantiteCommandee= commandeRepository.commandeParPeriode(dateDebut, dateFin, "%"+typeVaccin+"%", idcentre);
+		
+		int nombreVaccinsPeriodeType = listeVaccinsPeriodeType.size();
+		
+		
+		System.out.println(QuantiteCommandee);
+		System.out.println(nombreVaccinsPeriodeType);
+		
+		model.addAttribute("nombreVaccinsPeriodeType", nombreVaccinsPeriodeType);
+		model.addAttribute("QuantiteCommandee", QuantiteCommandee);
+		
+		
+		
+		model.addAttribute("dateDebut", dateDebut);
+		model.addAttribute("dateFin", dateFin);
+		model.addAttribute("typeVaccin", typeVaccin);
+		
+		return "gestionDeStock";
+	}
 	
 }

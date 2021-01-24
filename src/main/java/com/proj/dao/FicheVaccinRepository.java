@@ -64,6 +64,52 @@ public interface FicheVaccinRepository extends JpaRepository<FicheVaccin, Long>{
 			+ " where f.date >= :debutMois and f.date <= :finMois and f.etat=1"
 			+ " and e.centreSante.id like :u")
 	public List<FicheVaccin> chercherParMois(@Param("debutMois")Date debutMois, @Param("finMois")Date finMois, @Param("u")Long idcentre);
+	
+	
+	@Query("select f from FicheVaccin f"
+			+ "	inner join CalendrierVaccination c on f.calendrierVaccination = c.id "
+			+ " inner join Enfant e on c.enfant = e.id "
+			+ " where f.date >= :dateDebut and f.date <= :dateFin and f.etat=1"
+			+ " and f.type_vaccin like :y"
+			+ " and e.centreSante.id like :u")
+	public List<FicheVaccin> vaccinsConosomesPeriodeType(@Param("dateDebut")Date dateDebut, @Param("dateFin")Date dateFin, @Param("y")String type, @Param("u")Long idcentre);
+	
+	
+	
+	
+	@Query("select f from FicheVaccin f"
+			+ " inner join CalendrierVaccination c on f.calendrierVaccination = c.id"
+			+ " inner join Enfant e on c.enfant = e.id"
+			+ " where f.date >= :debutAn and f.date <= :finAn and f.etat=1")
+	public List<FicheVaccin> chercherParAn(@Param("debutAn")Date debutAn, @Param("finAn")Date finAn);
+	
+	
+	@Query("select f from FicheVaccin f"
+			+ "	inner join CalendrierVaccination c on f.calendrierVaccination = c.id "
+			+ " inner join Enfant e on c.enfant = e.id "
+			+ " where f.etat = 1"
+			+ " and e.sexe like :z")
+	public List<FicheVaccin> recherchParSexe(@Param("z")String sexe);
+	
+	
+	@Query("select f from FicheVaccin f"
+			+ "	inner join CalendrierVaccination c on f.calendrierVaccination = c.id "
+			+ " inner join Enfant e on c.enfant = e.id "
+			+ " inner join CentreSante s on e.centreSante = s.id"
+			+ " where f.etat = 1"
+			+ " and s.nom like :u")
+	public List<FicheVaccin> recherchParCentre(@Param("u")String nomCentre);
+	
+	
+	@Query("select f from FicheVaccin f"
+			+ "	inner join CalendrierVaccination c on f.calendrierVaccination = c.id "
+			+ " inner join Enfant e on c.enfant = e.id "
+			+ " inner join CentreSante s on e.centreSante = s.id"
+			+ " inner join Region r on s.region = r.id"
+			+ " where f.etat = 1"
+			+ " and r.nom like :r")
+	public List<FicheVaccin> recherchParRegion(@Param("r")String nomRegion);
+	
 }
 
 
